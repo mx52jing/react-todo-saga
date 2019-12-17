@@ -1,0 +1,38 @@
+.todo-wrap {
+    margin: 20px auto;
+    padding: 10px;
+    width: 500px;
+    border: 1px solid #eee;
+    .add-input {
+        width: 200px;
+        outline: none;
+    }
+    .todo-list {
+        padding-top: 15px;
+    }
+    .todo-item {
+        display: flex;
+        margin-bottom: 3px;
+        &:nth-child(2n) {
+            .item-value {
+                background-color: coral;
+            }
+        }
+        &:nth-child(2n+1) {
+            .item-value {
+                background-color: cornflowerblue;
+            }
+        }
+        .item-value {
+            flex: 1;
+            margin-right: 1px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 5px 0 5px 5px;
+        }
+    }
+    .no-sing {
+        color: #999;
+    }
+}

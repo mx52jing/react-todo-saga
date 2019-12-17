@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import {connect} from 'react-redux'
+import Loading from './components/Loading'
+import Notification from './components/Notification'
+import Todo from './components/Todo'
+import {actions} from './store/reducers/app'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function App(props) {
+    const {isFetching, msg, clear_msg} = props,
+        { type, content = ''} = msg
+    return (
+        <>
+            <Todo/>
+            {isFetching && <Loading />}
+            <Notification
+                clear_msg={clear_msg}
+                type={type}
+                content={content}/>
+        </>
+    );
 }
 
-export default App;
+export default connect(
+    state => state.app,
+    actions
+)(App)
