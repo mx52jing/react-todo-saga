@@ -97,10 +97,9 @@ function* removeItem(id) {
 
 export function* removeItemFlow() {
     while (true) {
-        const { id } = yield take(TodoTypes.REMOVE_ITEM)
+        const {id} = yield take(TodoTypes.REMOVE_ITEM)
         const lists = yield call(removeItem, id)
-        debugger
-        if(!!lists) {
+        if (!!lists) {
             yield put({type: TodoTypes.UPDATE_LIST, data: lists})
             yield put({
                 type: AppTypes.SET_MSG,
@@ -109,6 +108,41 @@ export function* removeItemFlow() {
                     content: '删除成功'
                 }
             })
+        }
+    }
+}
+
+/* 改变待办事项的状态 */
+function* toggleItem(id) {
+    try {
+        yield put({type: AppTypes.FETCH_START})
+        yield call(delay, 1000)
+        const data = yield select(state => state.todo),
+            {todoList} = data,
+            lists = todoList.map(item => {
+                if (item.id === id) {
+                    return {
+                        ...item,
+                        completed: !item.completed
+                    }
+                }
+                return item
+            })
+        return lists
+    } catch (e) {
+        yield put({type: AppTypes.SET_MSG, msg: {type: 1, content: '切换状态失败'}})
+    } finally {
+        yield put({type: AppTypes.FETCH_END})
+    }
+}
+
+export function* toggleFlow() {
+    while (true) {
+        const {id} = yield take(TodoTypes.TOGGLE_ITEM)
+        const lists = yield call(toggleItem, id)
+        if (!!lists) {
+            yield put({type: TodoTypes.UPDATE_LIST, data: lists})
+            yield put({type: AppTypes.SET_MSG, msg: {type: 0, content: '切换状态成功'}})
         }
     }
 }

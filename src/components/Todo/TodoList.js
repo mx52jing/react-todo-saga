@@ -1,14 +1,20 @@
 import React, {memo, useCallback} from 'react'
 import {connect} from 'react-redux'
-import {Button} from 'antd'
+import {Button, Checkbox} from 'antd'
 import {actions} from "../../store/reducers/todo"
 
-const TodoItem = ({id, value, completed, handleDelete}) => {
+const TodoItem = ({id, value, completed, handleDelete, handleToggle}) => {
     const handleClick = () => {
         handleDelete && handleDelete(id)
     }
+    const handleToggleChange = () => {
+        handleToggle && handleToggle(id)
+    }
     return (
         <div className="todo-item">
+            <Checkbox
+                onChange={handleToggleChange}
+                checked={completed}/>
             <span className="item-value">{value}</span>
             <Button
                 onClick={handleClick}
@@ -21,9 +27,12 @@ const TodoItem = ({id, value, completed, handleDelete}) => {
 
 const TodoList = memo(props => {
     console.log('todo list props', props);
-    const {todoList,remove_item} = props
+    const {todoList,remove_item, toggle_item} = props
     const handleDelete = useCallback(id => {
         remove_item && remove_item(id)
+    }, [])
+    const handleToggle = useCallback(id => {
+        toggle_item && toggle_item(id)
     }, [])
     return (
         <div className="todo-list">
@@ -31,6 +40,7 @@ const TodoList = memo(props => {
                 !!todoList.length ?
                     todoList.map(item => (
                         <TodoItem
+                            handleToggle={handleToggle}
                             handleDelete={handleDelete}
                             key={item.id}
                             {...item}/>
