@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import {useEffect} from 'react'
 import {notification} from 'antd'
 
 const typeMap = new Map([
@@ -8,12 +8,12 @@ const typeMap = new Map([
 
 export default ({type, content, clear_msg}) => {
     useEffect(() => {
-        if(!!content) {
+        if (!!content) {
             const notificationType = typeMap.get(type)
             notification[notificationType]({
                 message: '提示',
                 description: content,
-                duration: 2,
+                duration: 1,
                 onClose: () => {
                     clear_msg && clear_msg()
                 }
